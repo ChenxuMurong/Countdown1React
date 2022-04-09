@@ -100,8 +100,16 @@ class Game extends React.Component {
             const winner = calculateWinner(current.squares);
             // improvement: using ternary operator to determine 
             // the status string from current state
-            const status = winner? "winner is " + 
-        winner : 'Next player: ' + (this.state.xIsNext? 'X' : 'O');
+            let status = "";
+            if (this.state.stepNumber < 9){
+              status = winner? "winner is " + 
+          winner : 'Next player: ' + (this.state.xIsNext? 'X' : 'O');
+            }
+            else{
+              // extension: it will let the plays know 
+              // once it's a draw
+              status = "It's a draw";
+            }
 
           // returns a list of buttons. Upon clicking, they can
           // take u back in time
