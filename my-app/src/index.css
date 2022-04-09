@@ -22,6 +22,10 @@ body {
     width: 270px;
     font-size: 25px;
   }
+
+  .historyButton:hover{
+    cursor: pointer;
+  }
   
   .board-row:after {
     clear: both;

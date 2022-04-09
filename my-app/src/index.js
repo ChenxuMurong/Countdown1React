@@ -47,18 +47,20 @@ import './index.css';
             }
             
 class Game extends React.Component {
+        // SO STATE IS THE FIELDS IN JS ??
         constructor(props){
             super(props);
             // game has full control over history
             this.state = {
                 history: [{squares : Array(9).fill(null)
                 }],
+                stepNumber : 0,
                 xIsNext : true
             };
         }
 
         handleClick(i){
-            const history = this.state.history;
+            const history = this.state.history.slice(0,this.state.stepNumber+1);
             const current = history[history.length - 1];
             // name improved from "squares": otherwise
             // it will be too confusing. 
@@ -77,12 +79,24 @@ class Game extends React.Component {
             this.setState({history :  history.concat(
               [{squares : currSquares}]
             ),
+              stepNumber : history.length,
               xIsNext : !this.state.xIsNext});
+        }
+
+        // step is a num
+        // we are not updating state because react
+        // leave the state as 
+        // if if we haven't touched it
+        jumpTo(step){
+          this.setState({
+            stepNumber: step,
+            xIsNext: (step % 2) === 0,
+          });
         }
 
         render() {
             const history = this.state.history;
-            const current = history[history.length - 1];
+            const current = history[this.state.stepNumber];
             const winner = calculateWinner(current.squares);
             // improvement: using ternary operator to determine 
             // the status string from current state
@@ -97,7 +111,7 @@ class Game extends React.Component {
                               "Go to move #" + moveInd:
                               "Go to game start";
                 return(
-                  <li>
+                  <li key={moveInd}>
                     <button className='historyButton' 
                     onClick={() => this.jumpTo(moveInd)}>
                       {desc}
